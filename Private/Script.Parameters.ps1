@@ -1,0 +1,3 @@
+$Script:Parameters = @{
+    WordDocument = $null
+}
