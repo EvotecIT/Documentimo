@@ -3,7 +3,7 @@ Import-Module .\Documentimo.psd1 -Force
 Import-Module PSWriteWord -Force
 
 if ($null -eq $ADForest) {
-    $ADForest = Get-WinADForestInformation -Verbose
+    $ADForest = Get-WinADForestInformation -Verbose -PasswordQuality
 }
 
 $CompanyName = 'Evotec'
@@ -14,16 +14,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
     DocPageBreak
 
     DocText {
-        "This document provides a low-level design of roles and permissions for" `
-            + " the IT infrastructure team at Evotec organization. This document utilizes knowledge from" `
-            + " AD General Concept document that should be delivered with this document. Having all the information" `
-            + " described in attached document one can start designing Active Directory with those principles in mind." `
-            + " It's important to know while best practices that were described are important in decision making they" `
-            + " should not be treated as final and only solution. Most important aspect is to make sure company has full" `
-            + " usability of Active Directory and is happy with how it works. Making things harder just for the sake of" `
-            + " implementation of best practices isn't always the best way to go."
+        "This document provides low-level documentation of Active Directory infrastructure in Evotec organization. This document contains general data that has been exported from Active Directory and provides an overview of the whole environment."
     }
-
     DocNumbering -Text 'General Information - Forest Summary' -Level 0 -ItemType Numbered -HeadingType Heading1 {
         DocText {
             "Active Directory at $CompanyName has a forest name $($ADForest.Forest). Following table contains forest summary with important information:"
@@ -118,14 +110,14 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 #DocText -LineBreak
             }
 
-            DocNumbering -Text 'General Information - Fine Grained Password Policies' -Level 1 -ItemType Numbered -HeadingType Heading1 {
+            DocNumbering -Text 'General Information - Fine-grained Password Policies' -Level 1 -ItemType Numbered -HeadingType Heading1 {
                 if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainFineGrainedPolicies) {
-                    DocText -Text 'Following table contains fine grained password policies'
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle  "Fine Grained Password Policy for <Domain>"
+                    DocText -Text 'Following table contains Fine-grained password policies'
+                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle  "Fine-grained Password Policy for <Domain>"
                 } else {
                     DocText {
-                        "Following section should cover fine grained password policies. " `
-                            + "There were no fine grained password polices defined in $Domain. There was no formal requirement to have them set up."
+                        "Following section should cover fine-grained password policies. " `
+                            + "There were no fine-grained password polices defined in $Domain. There was no formal requirement to have them set up."
                     }
                 }
             }
@@ -165,31 +157,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Priviliged Groups' -Level 1 -ItemType Numbered -HeadingType Heading1 {
                 DocText -Text 'Following table contains list of priviliged groups and count of the members in it.'
                 DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupsPriviliged -Design ColorfulGridAccent5 -AutoFit Window
-                DocText -LineBreak
-
-                ### ADD CHARTT
-                ###
-                <#
-                SectionDomainPriviligedGroup                      = [ordered] @{
-                    Use             = $False
-                    TocEnable       = $True
-                    TocText         = 'General Information - Priviliged Groups'
-                    TocListLevel    = 1
-                    TocListItemType = 'Numbered'
-                    TocHeadingType  = 'Heading2'
-                    TableData       = [PSWinDocumentation.ActiveDirectory]::DomainGroupsPriviliged
-                    TableDesign     = 'ColorfulGridAccent5'
-                    Text            = 'Following table contains list of priviliged groups and count of the members in it.'
-                    ChartEnable     = $True
-                    ChartTitle      = 'Priviliged Group Members'
-                    ChartData       = [PSWinDocumentation.ActiveDirectory]::DomainGroupsPriviliged
-                    ChartKeys       = 'Group Name', 'Members Count'
-                    ChartValues     = 'Members Count'
-                    ExcelExport     = $true
-                    ExcelWorkSheet  = '<Domain> - PriviligedGroupMembers'
-                    ExcelData       = [PSWinDocumentation.ActiveDirectory]::DomainGroupsPriviliged
-                }
-                #>
+                DocChart -Title 'Priviliged Group Members' -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupsPriviliged -Key 'Group Name' -Value 'Member Count'
             }
 
             DocNumbering -Text "General Information - Domain Users in $Domain" -Level 1 -ItemType Numbered -HeadingType Heading1 {
@@ -200,29 +168,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'General Information - Users Count' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText -Text "Following table and chart shows number of users in its categories"
                     DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainUsersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Users Count'
-                    <#
-                        SectionDomainUsersCount                           = [ordered] @{
-                            Use             = $true
-                            TocEnable       = $True
-                            TocText         = 'General Information - Users Count'
-                            TocListLevel    = 2
-                            TocListItemType = 'Numbered'
-                            TocHeadingType  = 'Heading2'
-                            TableData       = [PSWinDocumentation.ActiveDirectory]::DomainUsersCount
-                            TableDesign     = 'ColorfulGridAccent5'
-                            TableTitleMerge = $true
-                            TableTitleText  = 'Users Count'
-                            Text            = "Following table and chart shows number of users in its categories"
-                            ChartEnable     = $True
-                            ChartTitle      = 'Users Count'
-                            ChartData       = [PSWinDocumentation.ActiveDirectory]::DomainUsersCount
-                            ChartKeys       = 'Keys'
-                            ChartValues     = 'Values'
-                            ExcelExport     = $true
-                            ExcelWorkSheet  = '<Domain> - UsersCount'
-                            ExcelData       = [PSWinDocumentation.ActiveDirectory]::DomainUsersCount
-                        }
-                    #>
+                    DocChart -Title 'Servers Count' -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainUsersCount
                 }
 
                 DocNumbering -Text 'General Information - Domain Administrators' -Level 2 -ItemType Numbered -HeadingType Heading2 {
@@ -253,69 +199,17 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'General Information - Computers' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText -Text "Following table and chart shows number of computers and their versions"
                     DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Computers Count'
-
-                    <#
-                        DomainComputersCount                              = [ordered] @{
-                            Use                   = $true
-                            TableData             = [PSWinDocumentation.ActiveDirectory]::DomainComputersCount
-                            TableDesign           = 'ColorfulGridAccent5'
-                            TableTitleMerge       = $true
-                            TableTitleText        = 'Computers Count'
-                            Text                  = "Following table and chart shows number of computers and their versions"
-                            ChartEnable           = $True
-                            ChartTitle            = 'Computers Count'
-                            ChartData             = [PSWinDocumentation.ActiveDirectory]::DomainComputersCount
-                            ChartKeys             = 'System Name', 'System Count'
-                            ChartValues           = 'System Count'
-                            ExcelExport           = $true
-                            ExcelWorkSheet        = '<Domain> - DomainComputersCount'
-                            ExcelData             = [PSWinDocumentation.ActiveDirectory]::DomainComputersCount
-                            EmptyParagraphsBefore = 1
-                        }
-                    #>
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersCount -Key 'System Name' -Value  'System Count'
                 }
                 DocNumbering -Text 'General Information - Servers' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText -Text "Following table and chart shows number of servers and their versions"
                     DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainServersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Servers Count'
-
-                    <#
-                        DomainServersCount                                = [ordered] @{
-                            Use                   = $true
-                            TableData             = [PSWinDocumentation.ActiveDirectory]::DomainServersCount
-                            TableDesign           = 'ColorfulGridAccent5'
-                            TableTitleMerge       = $true
-                            TableTitleText        = 'Servers Count'
-                            Text                  = "Following table and chart shows number of servers and their versions"
-                            ChartEnable           = $True
-                            ChartTitle            = 'Servers Count'
-                            ChartData             = [PSWinDocumentation.ActiveDirectory]::DomainServersCount
-                            ChartKeys             = 'System Name', 'System Count'
-                            ChartValues           = 'System Count'
-                            ExcelExport           = $true
-                            ExcelWorkSheet        = '<Domain> - DomainServersCount'
-                            ExcelData             = [PSWinDocumentation.ActiveDirectory]::DomainServersCount
-                            EmptyParagraphsBefore = 1
-                        }
-                    #>
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainServersCount -Key 'System Name' -Value  'System Count'
                 }
                 DocNumbering -Text 'General Information - Unknown Computers' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText -Text "Following table and chart shows number of unknown object computers in domain."
                     DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersUnknownCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Unknown Computers Count'
-
-                    <#
-                    DomainComputersUnknownCount                       = [ordered] @{
-                        Use                   = $true
-                        TableData             = [PSWinDocumentation.ActiveDirectory]::DomainComputersUnknownCount
-                        TableDesign           = 'ColorfulGridAccent5'
-                        TableTitleMerge       = $true
-                        TableTitleText        = 'Unknown Computers Count'
-                        Text                  = "Following table and chart shows number of unknown object computers in domain."
-                        ExcelExport           = $false
-                        ExcelWorkSheet        = '<Domain> - ComputersUnknownCount'
-                        ExcelData             = [PSWinDocumentation.ActiveDirectory]::DomainComputersUnknownCount
-                        EmptyParagraphsBefore = 1
-                    }
-                    #>
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersUnknownCount -Key 'System Name' -Value  'System Count'
                 }
             }
 
@@ -360,7 +254,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 }
                 DocNumbering -Text 'Password Quality - Known passwords' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText {
-                        "Passwords of these accounts have been found in given dictionary. It's highely recommended to " `
+                        "Passwords of these accounts have been found in given dictionary. It's highly recommended to " `
                             + "notify those users and ask them to change their passwords asap!"
                     }
 
@@ -467,7 +361,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 }
                 DocNumbering -Text 'Password Quality - Leaked Passwords' -Level 2 -ItemType Numbered -HeadingType Heading2 {
                     DocText {
-                        "Passwords of these accounts have been found in given HASH dictionary (https://haveibeenpwned.com/). It's highely recommended to " `
+                        "Passwords of these accounts have been found in given HASH dictionary (https://haveibeenpwned.com/). It's highly recommended to " `
                             + "notify those users and ask them to change their passwords asap!"
                     }
                     if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordHashesWeakPassword) {
@@ -483,35 +377,13 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                         "Following table and chart shows password statistics"
                     }
                     if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats -Design ColorfulGridAccent5 -AutoFit Window
+                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Password Quality - Statistics'
                     } else {
                         DocText {
                             'There were no passwords found that match in given dictionary.'
                         }
                     }
-                    <#
-                                    DomainPasswordStats                               = [ordered] @{
-                    Use             = $true
-                    TocEnable       = $True
-                    TocText         = 'Password Quality - Statistics'
-                    TocListLevel    = 2
-                    TocListItemType = 'Numbered'
-                    TocHeadingType  = 'Heading2'
-                    TableData       = [PSWinDocumentation.ActiveDirectory]::DomainPasswordStats
-                    TableDesign     = 'ColorfulGridAccent5'
-                    TableTitleMerge = $true
-                    TableTitleText  = 'Password Quality Statistics'
-                    Text            = "Following table and chart shows password statistics"
-                    ChartEnable     = $True
-                    ChartTitle      = 'Password Statistics'
-                    ChartData       = [PSWinDocumentation.ActiveDirectory]::DomainPasswordStats
-                    ChartKeys       = 'Keys'
-                    ChartValues     = 'Values'
-                    ExcelExport     = $true
-                    ExcelWorkSheet  = '<Domain> - PasswordStats'
-                    ExcelData       = [PSWinDocumentation.ActiveDirectory]::DomainPasswordStats
-                }
-                    #>
+                    DocChart -Title 'Password Statistics' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats # Hashtables don't require Key/Value pair
                 }
             }
         }
