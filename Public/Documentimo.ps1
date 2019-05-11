@@ -6,9 +6,8 @@ function Documentimo {
         [switch] $Open
     )
     $WordDocument = New-WordDocument -FilePath $FilePath
-
-    $Script:Parameters.WordDocument = $WordDocument
-    Invoke-Command -ScriptBlock $Content
-
+    New-WordProcessing -Content $Content -WordDocument $WordDocument
     Save-WordDocument -WordDocument $WordDocument -Supress $true -Language 'en-US' -Verbose -OpenDocument:$Open
 }
+
+

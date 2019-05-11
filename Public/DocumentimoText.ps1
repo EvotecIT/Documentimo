@@ -40,12 +40,13 @@ function DocumentimoText {
     )
     if ($TextBlock) {
         $Text = (Invoke-Command -ScriptBlock $TextBlock)
-        #if ($Text.Count) {
-        #    $LineBreak = $false
-        #}
     }
-    Add-WordText -WordDocument $Script:Parameters.WordDocument -Text $Text -Color $Color -Supress $true
-    if ($LineBreak) {
-        Add-WordParagraph -WordDocument $Script:Parameters.WordDocument -Supress $True
+
+    [PSCustomObject] @{
+        ObjectType = 'Text'
+        Text       = $Text
+        Color      = $Color
+        LineBreak = $LineBreak
     }
 }
+

@@ -3,7 +3,14 @@
     param(
         [string] $Title,
         [int] $RightTabPos,
-        [TableOfContentsSwitches[]] $Switches
+        [Xceed.Words.Net.TableOfContentsSwitches] $Switches
     )
-    Add-WordToc -WordDocument $Script:Parameters.WordDocument -Title $Title -Switches $Switches -RightTabPos $RightTabPos -Supress $True
+    [PSCustomObject] @{
+        ObjectType  = 'TOC'
+        Title       = $Title
+        RightTabPos = $RightTabPos
+        Switches    = $Switches
+    }
+
+    #Add-WordToc -WordDocument $Script:Parameters.WordDocument -Title $Title -Switches $Switches -RightTabPos $RightTabPos -Supress $True
 }
