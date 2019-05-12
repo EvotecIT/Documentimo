@@ -12,7 +12,7 @@
     RootModule = 'Documentimo.psm1'
 
     # Version number of this module.
-    ModuleVersion = '0.0.1'
+    ModuleVersion = '0.0.2'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -70,9 +70,8 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    FunctionsToExport = 'Documentimo', 'DocumentimoChart', 'DocumentimoList', 
-    'DocumentimoListItem', 'DocumentimoNumbering', 'DocumentimoPageBreak', 
-    'DocumentimoTable', 'DocumentimoText', 'DocumentimoTableOfContents'
+    FunctionsToExport = 'Documentimo', 'DocChart', 'DocList', 'DocListItem', 'DocNumbering', 
+    'DocPageBreak', 'DocTable', 'DocText', 'DocToc'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
@@ -81,12 +80,13 @@
     # VariablesToExport = @()
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport = 'Doc', 'New-Documentimo', 'DocChart', 'New-DocumentimoChart', 'DocList', 
-    'New-DocumentimoList', 'DocListItem', 'New-DocumentimoListItem', 
-    'DocNumbering', 'New-DocumentimoNumbering', 
-    'New-DocumentimoPageBreak', 'DocPageBreak', 'New-DocumentimoTable', 
-    'DocTable', 'New-DocumentimoText', 'DocText', 'New-DocumentimoTOC', 
-    'DocToc', 'DocumentimoTOC', 'DocTableOfContents'
+    AliasesToExport = 'Doc', 'New-Documentimo', 'DocumentimoChart', 'New-DocumentimoChart', 
+    'DocumentimoList', 'New-DocumentimoList', 'DocumentimoListItem', 
+    'New-DocumentimoListItem', 'DocumentimoNumbering', 
+    'New-DocumentimoNumbering', 'DocumentimoPageBreak', 
+    'New-DocumentimoPageBreak', 'DocumentimoTable', 
+    'New-DocumentimoTable', 'DocumentimoText', 'New-DocumentimoText', 
+    'DocumentimoTOC', 'New-DocumentimoTOC'
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()

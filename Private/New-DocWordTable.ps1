@@ -5,14 +5,9 @@
         [PSCustomObject] $Parameters
     )
 
-
     if ($Parameters.OverWriteTitle) {
-        #[nullable[int]] $TableMaximumColumns = 5,
-        # [nullable[bool]] $TableTitleMerge,
-        #[string] $TableTitleText,
-        [Alignment] $TitleAlignment = [Alignment]::center
-        [System.Drawing.Color] $TitleColor = [System.Drawing.Color]::Black
-
+        [Xceed.Words.NET.Alignment] $TitleAlignment = $Parameters.OverwriteTitleAlignment
+        [System.Drawing.Color] $TitleColor = $Parameters.OverwriteTitleColor
 
         $Table = Add-WordTable -WordDocument $WordDocument -Supress $false -DataTable $Parameters.DataTable -Design $Parameters.Design -AutoFit $Parameters.AutoFit #-DoNotAddTitle
         $Table = Set-WordTableRowMergeCells -Table $Table -RowNr 0 -MergeAll  # -ColumnNrStart 0 -ColumnNrEnd 1
@@ -22,9 +17,4 @@
         $Table = Add-WordTable -WordDocument $WordDocument -Supress $true -DataTable $Parameters.DataTable -Design $Parameters.Design -AutoFit $Parameters.AutoFit
     }
 
-}
-
-foreach ($Domain in $ADForest.FoundDomains.Keys | Where-Object { $_ -ne 'ad.evotec.pl' }) {
-
-    Write-Color $ADForest.FoundDomains.$Domain
 }

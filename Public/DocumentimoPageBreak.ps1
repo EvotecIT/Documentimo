@@ -1,6 +1,6 @@
-﻿function DocumentimoPageBreak {
-    [alias('New-DocumentimoPageBreak', 'DocPageBreak')]
-
+﻿function DocPageBreak {
+    [CmdletBinding()]
+    [alias('DocumentimoPageBreak', 'New-DocumentimoPageBreak')]
     param(
         [int] $Count = 1
     )

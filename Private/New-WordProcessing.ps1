@@ -4,8 +4,7 @@
         [Array] $Content,
         [Xceed.Words.NET.Container] $WordDocument
     )
-    #if ($null -ne $Content) {
-       # $Array = Invoke-Command -ScriptBlock $Content
+    if ($Content.Count -gt 0) {
         foreach ($Parameters in $Content) {
             if ($Parameters.ObjectType -eq 'List') {
                 New-DocWordList -WordDocument $WordDocument -Parameters $Parameters
@@ -21,9 +20,7 @@
                 New-DocWordPageBreak -WordDocument $WordDocument -Parameters $Parameters
             } elseif ($Parameters.ObjectType -eq 'ChartPie') {
                 New-DocWordChart -WordDocument $WordDocument -Parameters $Parameters
-            } else {
-                $Parameters
             }
         }
-    #}
+    }
 }

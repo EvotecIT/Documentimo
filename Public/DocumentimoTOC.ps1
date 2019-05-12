@@ -1,5 +1,6 @@
-﻿function DocumentimoTableOfContents {
-    [alias('New-DocumentimoTOC', 'DocToc', 'DocumentimoTOC', 'DocTableOfContents')]
+﻿function DocToc {
+    [CmdletBinding()]
+    [alias('DocumentimoTOC', 'New-DocumentimoTOC')]
     param(
         [string] $Title,
         [int] $RightTabPos,
@@ -11,6 +12,4 @@
         RightTabPos = $RightTabPos
         Switches    = $Switches
     }
-
-    #Add-WordToc -WordDocument $Script:Parameters.WordDocument -Title $Title -Switches $Switches -RightTabPos $RightTabPos -Supress $True
 }

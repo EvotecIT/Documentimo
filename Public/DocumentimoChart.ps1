@@ -1,5 +1,6 @@
-﻿function DocumentimoChart {
-    [alias('DocChart', 'New-DocumentimoChart')]
+﻿function DocChart {
+    [CmdletBinding()]
+    [alias('DocumentimoChart', 'New-DocumentimoChart')]
     param(
         [Array] $DataTable,
         [string] $Title,
