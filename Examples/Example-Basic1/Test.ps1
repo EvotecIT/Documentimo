@@ -11,12 +11,9 @@ $TableForCharts = @(
 Documentimo -FilePath $PSScriptRoot\Test.docx {
     DocTOC -Title 'Table of content'
 
-    DocPageBreak -Verbose
-
     DocNumbering -Text 'My document' -Level 0 -Type Numbered -Heading Heading1 {
         DocText -Text 'Test', ' Test2' -Color Yellow
         DocTable -DataTable $Table -Design ColorfulGrid
-        DocPageBreak
     }
 
     DocNumbering -Text 'Chart' {
