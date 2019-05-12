@@ -10,6 +10,9 @@ function Documentimo {
 
     if ($null -ne $Content) {
         $Array = Invoke-Command -ScriptBlock $Content
+    }
+    New-WordProcessing -Content $Array -WordDocument $WordDocument
+    <#
         foreach ($Parameters in $Array) {
             if ($Parameters.ObjectType -eq 'List') {
                 New-DocWordList -WordDocument $WordDocument -Parameters $Parameters
@@ -29,7 +32,7 @@ function Documentimo {
                 $Parameters
             }
         }
-    }
+    #>
 
     Save-WordDocument -WordDocument $WordDocument -Supress $true -Language 'en-US' -Verbose -OpenDocument:$Open
 }

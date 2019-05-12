@@ -82,9 +82,9 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
                 Write-Color $ADForest.FoundDomains."$Domain".DomainInformation.DistinguishedName -Color Green
                 DocList -Type Bulleted {
-                    DocListItem -Level 0 -Text "Domain $($ADForest.FoundDomains.$Domain.DomainInformation.DistinguishedName)"
-                    DocListItem -Level 1 -Text "Name for fully qualified domain name (FQDN): $($ADForest.FoundDomains.$Domain.DomainInformation.DNSRoot)"
-                    DocListItem -Level 1 -Text "Name for NetBIOS: $($ADForest.FoundDomains.$Domain.DomainInformation.NetBIOSName)"
+                    DocListItem -Level 1 -Text "Domain $($ADForest.FoundDomains.$Domain.DomainInformation.DistinguishedName)"
+                    DocListItem -Level 2 -Text "Name for fully qualified domain name (FQDN): $($ADForest.FoundDomains.$Domain.DomainInformation.DNSRoot)"
+                    DocListItem -Level 2 -Text "Name for NetBIOS: $($ADForest.FoundDomains.$Domain.DomainInformation.NetBIOSName)"
                 }
 
                 # TO DO: DocList

@@ -1,12 +1,12 @@
 ﻿function New-WordProcessing {
     [CmdletBinding()]
     param(
-        [ScriptBlock] $Content,
+        [Array] $Content,
         [Xceed.Words.NET.Container] $WordDocument
     )
-    if ($null -ne $Content) {
-        $Array = Invoke-Command -ScriptBlock $Content
-        foreach ($Parameters in $Array) {
+    #if ($null -ne $Content) {
+       # $Array = Invoke-Command -ScriptBlock $Content
+        foreach ($Parameters in $Content) {
             if ($Parameters.ObjectType -eq 'List') {
                 New-DocWordList -WordDocument $WordDocument -Parameters $Parameters
             } elseif ($Parameters.ObjectType -eq 'Table') {
@@ -25,5 +25,5 @@
                 $Parameters
             }
         }
-    }
+    #}
 }
