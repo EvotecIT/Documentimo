@@ -14,5 +14,5 @@
             $Paragraph = $List.Items[$List.Items.Count - 1]
         }
     }
-    Add-WordListItem -WordDocument $WordDocument -List $List
+    $null = Add-WordListItem -WordDocument $WordDocument -List $List
 }

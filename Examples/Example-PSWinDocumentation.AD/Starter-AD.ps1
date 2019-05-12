@@ -70,9 +70,6 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
         }
     }
     foreach ($Domain in $ADForest.FoundDomains.Keys) {
-
-        Write-Color $Domain -Color Yellow
-
         DocPageBreak
 
         DocNumbering -Text "General Information - Domain $Domain" -Level 0 -Type Numbered -Heading Heading1 {
@@ -80,30 +77,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Domain Summary' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following domain exists within forest $($ADForest.ForestName):"
 
-                Write-Color $ADForest.FoundDomains."$Domain".DomainInformation.DistinguishedName -Color Green
                 DocList -Type Bulleted {
                     DocListItem -Level 1 -Text "Domain $($ADForest.FoundDomains.$Domain.DomainInformation.DistinguishedName)"
                     DocListItem -Level 2 -Text "Name for fully qualified domain name (FQDN): $($ADForest.FoundDomains.$Domain.DomainInformation.DNSRoot)"
                     DocListItem -Level 2 -Text "Name for NetBIOS: $($ADForest.FoundDomains.$Domain.DomainInformation.NetBIOSName)"
                 }
-
-                # TO DO: DocList
-                #DocText -LineBreak
-                <#
-                SectionDomainIntroduction                         = [ordered] @{
-                    Use                   = $true
-                    TocEnable             = $True
-                    TocText               = 'General Information - Domain Summary'
-                    TocListLevel          = 1
-                    TocListItemType       = [ListItemType]::Numbered
-                    TocHeadingType        = [HeadingType]::Heading1
-                    Text                  = "Following domain exists within forest <ForestName>:"
-                    ListBuilderContent    = "Domain <DomainDN>", 'Name for fully qualified domain name (FQDN): <Domain>', 'Name for NetBIOS: <DomainNetBios>'
-                    ListBuilderLevel      = 0, 1, 1
-                    ListBuilderType       = [ListItemType]::Bulleted, [ListItemType]::Bulleted, [ListItemType]::Bulleted
-                    EmptyParagraphsBefore = 0
-                }
-                #>
             }
 
             DocNumbering -Text  'General Information - Domain Controllers' -Level 1 -Type Numbered -Heading Heading1 {
@@ -118,7 +96,6 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Password Policies' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains password policies for all users within $Domain"
                 DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainDefaultPasswordPolicy -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle "Default Password Policy for $Domain"
-                #DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - Fine-grained Password Policies' -Level 1 -Type Numbered -Heading Heading1 {
@@ -135,12 +112,10 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Group Policies' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains group policies for $Domain"
                 DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupPolicies -Design ColorfulGridAccent5 -AutoFit Window
-                #DocText -LineBreak
             }
             DocNumbering -Text 'General Information - Group Policies Details' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains group policies for $Domain"
                 DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupPoliciesDetails -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 6
-                #DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - DNS A/SRV Records' -Level 1 -Type Numbered -Heading Heading1 {
@@ -172,16 +147,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             }
 
             DocNumbering -Text "General Information - Domain Users in $Domain" -Level 1 -Type Numbered -Heading Heading1 {
-
-                #DocText -Text 'Following table contains list of priviliged groups and count of the members in it.'
-
-
                 DocNumbering -Text 'General Information - Users Count' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of users in its categories"
                     DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Users Count'
                     DocChart -Title 'Servers Count' -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount
                 }
-
                 DocNumbering -Text 'General Information - Domain Administrators' -Level 2 -Type Numbered -Heading Heading2 {
 
                     if ($ADForest.FoundDomains.$Domain.DomainAdministratorsRecursive) {
@@ -191,8 +161,6 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                         DocText -Text 'No Domain Administrators users were defined for this domain.'
                     }
                 }
-
-
                 DocNumbering -Text  'General Information - Enterprise Administrators' -Level 2 -Type Numbered -Heading Heading2 {
 
                     if ($ADForest.FoundDomains.$Domain.DomainEnterpriseAdministratorsRecursive) {
