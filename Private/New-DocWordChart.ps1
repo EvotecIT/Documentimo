@@ -2,15 +2,15 @@ function New-DocWordChart {
     [CmdletBinding()]
     param(
         [Xceed.Words.NET.Container] $WordDocument,
-        [PSCustomObject] $WordObject
+        [PSCustomObject] $Parameters
     )
 
-    [Array] $DataTable = $WordObject.DataTable
-    [string] $Key = $WordObject.Key
-    [string] $Value = $WordObject.Value
-    [Xceed.Words.NET.ChartLegendPosition] $LegendPosition = $WordObject.LegendPosition
-    [bool] $LegendOverlay = $WordObject.LegendOverlay
-    [string] $Title = $WordObject.Title
+    [Array] $DataTable = $Parameters.DataTable
+    [string] $Key = $Parameters.Key
+    [string] $Value = $Parameters.Value
+    [Xceed.Words.NET.ChartLegendPosition] $LegendPosition = $Parameters.LegendPosition
+    [bool] $LegendOverlay = $Parameters.LegendOverlay
+    [string] $Title = $Parameters.Title
 
     if ($DataTable.Count -gt 0) {
         # If chart had no values or keys it would create an empty chart and prevent saving of document in Word

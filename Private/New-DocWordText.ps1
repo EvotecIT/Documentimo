@@ -2,14 +2,14 @@
     [CmdletBinding()]
     param(
         [Xceed.Words.NET.Container] $WordDocument,
-        [PSCustomObject] $WordObject
+        [PSCustomObject] $Parameters
     )
 
 
-    if ($WordObject.Text) {
-        Add-WordText -WordDocument $WordDocument -Text $WordObject.Text -Color $WordObject.Color -Supress $true
+    if ($Parameters.Text) {
+        Add-WordText -WordDocument $WordDocument -Text $Parameters.Text -Color $Parameters.Color -Supress $true
     }
-    if ($WordObject.LineBreak) {
+    if ($Parameters.LineBreak) {
         Add-WordParagraph -WordDocument $WordDocument -Supress $True
     }
 }

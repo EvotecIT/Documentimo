@@ -3,7 +3,7 @@ Import-Module .\Documentimo.psd1 -Force
 Import-Module PSWriteWord -Force
 
 if ($null -eq $ADForest) {
-    $ADForest = Get-WinADForestInformation -Verbose -PasswordQuality
+    $ADForest = Get-WinADForestInformation -Verbose -PasswordQuality -DontRemoveEmpty
 }
 
 $CompanyName = 'Evotec'
@@ -70,6 +70,9 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
         }
     }
     foreach ($Domain in $ADForest.FoundDomains.Keys) {
+
+        Write-Color $Domain -Color Yellow
+
         DocPageBreak
 
         DocNumbering -Text "General Information - Domain $Domain" -Level 0 -Type Numbered -Heading Heading1 {
@@ -77,10 +80,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Domain Summary' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following domain exists within forest $($ADForest.ForestName):"
 
+                Write-Color $ADForest.FoundDomains."$Domain".DomainInformation.DistinguishedName -Color Green
                 DocList -Type Bulleted {
-                    DocListItem -Level 0 -Text "Domain $($ADForest.FoundDomains.'ad.evotec.xyz'.DomainInformation.DistinguishedName)"
-                    DocListItem -Level 1 -Text "Name for fully qualified domain name (FQDN): $($ADForest.FoundDomains.'ad.evotec.xyz'.DomainInformation.DNSRoot)"
-                    DocListItem -Level 1 -Text "Name for NetBIOS: $($ADForest.FoundDomains.'ad.evotec.xyz'.DomainInformation.NetBIOSName)"
+                    DocListItem -Level 0 -Text "Domain $($ADForest.FoundDomains.$Domain.DomainInformation.DistinguishedName)"
+                    DocListItem -Level 1 -Text "Name for fully qualified domain name (FQDN): $($ADForest.FoundDomains.$Domain.DomainInformation.DNSRoot)"
+                    DocListItem -Level 1 -Text "Name for NetBIOS: $($ADForest.FoundDomains.$Domain.DomainInformation.NetBIOSName)"
                 }
 
                 # TO DO: DocList
@@ -104,23 +108,23 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
             DocNumbering -Text  'General Information - Domain Controllers' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text 'Following table contains domain controllers'
-                DocTable -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainControllers -Design ColorfulGridAccent5 -AutoFit Window #-OverwriteTitle 'Forest Summary'
+                DocTable -DataTable ($ADForest.FoundDomains.$Domain.DomainControllers) -Design ColorfulGridAccent5 -AutoFit Window #-OverwriteTitle 'Forest Summary'
                 DocText -LineBreak
 
                 DocText -Text "Following table contains FSMO servers with roles for domain $Domain"
-                DocTable -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainFSMO -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle "FSMO Roles for $Domain"
+                DocTable -DataTable ($ADForest.FoundDomains.$Domain.DomainFSMO) -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle "FSMO Roles for $Domain"
             }
 
             DocNumbering -Text 'General Information - Password Policies' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains password policies for all users within $Domain"
-                DocTable -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainDefaultPasswordPolicy -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle "Default Password Policy for $Domain"
+                DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainDefaultPasswordPolicy -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle "Default Password Policy for $Domain"
                 #DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - Fine-grained Password Policies' -Level 1 -Type Numbered -Heading Heading1 {
-                if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainFineGrainedPolicies) {
+                if ($ADForest.FoundDomains.$Domain.DomainFineGrainedPolicies) {
                     DocText -Text 'Following table contains Fine-grained password policies'
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle  "Fine-grained Password Policy for <Domain>"
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle  "Fine-grained Password Policy for <Domain>"
                 } else {
                     DocText {
                         "Following section should cover fine-grained password policies. " `
@@ -130,41 +134,41 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             }
             DocNumbering -Text 'General Information - Group Policies' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains group policies for $Domain"
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupPolicies -Design ColorfulGridAccent5 -AutoFit Window
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupPolicies -Design ColorfulGridAccent5 -AutoFit Window
                 #DocText -LineBreak
             }
             DocNumbering -Text 'General Information - Group Policies Details' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains group policies for $Domain"
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupPoliciesDetails -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 6
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupPoliciesDetails -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 6
                 #DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - DNS A/SRV Records' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains SRV records for Kerberos and LDAP"
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainDNSSRV -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainDNSSRV -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
                 DocText -LineBreak
 
                 DocText -Text "Following table contains A records for Kerberos and LDAP"
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainDNSA -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainDNSA -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
             }
 
 
             DocNumbering -Text 'General Information - Trusts' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains trusts established with domains..."
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainTrusts -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainTrusts -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 10
                 DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - Organizational Units' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text "Following table contains all OU's created in $Domain"
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainOrganizationalUnits -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 4
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainOrganizationalUnits -Design ColorfulGridAccent5 -AutoFit Window -MaximumColumns 4
                 DocText -LineBreak
             }
 
             DocNumbering -Text 'General Information - Priviliged Groups' -Level 1 -Type Numbered -Heading Heading1 {
                 DocText -Text 'Following table contains list of priviliged groups and count of the members in it.'
-                DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupsPriviliged -Design ColorfulGridAccent5 -AutoFit Window
-                DocChart -Title 'Priviliged Group Members' -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainGroupsPriviliged -Key 'Group Name' -Value 'Member Count'
+                DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupsPriviliged -Design ColorfulGridAccent5 -AutoFit Window
+                DocChart -Title 'Priviliged Group Members' -DataTable  $ADForest.FoundDomains.$Domain.DomainGroupsPriviliged -Key 'Group Name' -Value 'Member Count'
             }
 
             DocNumbering -Text "General Information - Domain Users in $Domain" -Level 1 -Type Numbered -Heading Heading1 {
@@ -174,15 +178,15 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
                 DocNumbering -Text 'General Information - Users Count' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of users in its categories"
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainUsersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Users Count'
-                    DocChart -Title 'Servers Count' -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainUsersCount
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Users Count'
+                    DocChart -Title 'Servers Count' -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount
                 }
 
                 DocNumbering -Text 'General Information - Domain Administrators' -Level 2 -Type Numbered -Heading Heading2 {
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainAdministratorsRecursive) {
+                    if ($ADForest.FoundDomains.$Domain.DomainAdministratorsRecursive) {
                         DocText -Text 'Following users have highest priviliges and are able to control a lot of Windows resources.'
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainAdministratorsRecursive -Design ColorfulGridAccent5 -AutoFit Window
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainAdministratorsRecursive -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'No Domain Administrators users were defined for this domain.'
                     }
@@ -191,9 +195,9 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
                 DocNumbering -Text  'General Information - Enterprise Administrators' -Level 2 -Type Numbered -Heading Heading2 {
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainEnterpriseAdministratorsRecursive) {
+                    if ($ADForest.FoundDomains.$Domain.DomainEnterpriseAdministratorsRecursive) {
                         DocText -Text 'Following users have highest priviliges across Forest and are able to control a lot of Windows resources.'
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainEnterpriseAdministratorsRecursive -Design ColorfulGridAccent5 -AutoFit Window
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainEnterpriseAdministratorsRecursive -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'No Enterprise Administrators users were defined for this domain.'
                     }
@@ -205,18 +209,18 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
                 DocNumbering -Text 'General Information - Computers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of computers and their versions"
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Computers Count'
-                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersCount -Key 'System Name' -Value  'System Count'
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainComputersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Computers Count'
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersCount -Key 'System Name' -Value  'System Count'
                 }
                 DocNumbering -Text 'General Information - Servers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of servers and their versions"
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainServersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Servers Count'
-                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainServersCount -Key 'System Name' -Value  'System Count'
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainServersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Servers Count'
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainServersCount -Key 'System Name' -Value  'System Count'
                 }
                 DocNumbering -Text 'General Information - Unknown Computers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of unknown object computers in domain."
-                    DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersUnknownCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Unknown Computers Count'
-                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainComputersUnknownCount -Key 'System Name' -Value  'System Count'
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainComputersUnknownCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Unknown Computers Count'
+                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersUnknownCount -Key 'System Name' -Value  'System Count'
                 }
             }
 
@@ -229,8 +233,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'Password Quality - Passwords with Reversible Encryption' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text 'Passwords of these accounts are stored using reversible encryption.'
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordClearTextPassword) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordClearTextPassword -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordClearTextPassword) {
+                        DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainPasswordClearTextPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'There are no accounts that have passwords stored using reversible encryption.'
                     }
@@ -241,8 +245,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                             + ' Due to the limited charset allowed, they are fairly easy to crack. Following accounts are affected:'
                     }
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordLMHash) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordLMHash -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordLMHash) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordLMHash -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'LM-hashes is the oldest password storage used by Windows, dating back to OS/2 system.' `
@@ -253,8 +257,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'Password Quality - Empty Passwords' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text  'Following accounts have no password set:'
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordEmptyPassword) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordEmptyPassword -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordEmptyPassword) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordEmptyPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text "There are no accounts in $Domain that have no password set."
                     }
@@ -265,8 +269,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                             + "notify those users and ask them to change their passwords asap!"
                     }
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordWeakPassword) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordWeakPassword) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'There were no passwords found that match given dictionary.'
                     }
@@ -274,8 +278,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'Password Quality - Default Computer Password' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text 'These computer objects have their password set to default:'
 
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDefaultComputerPassword) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDefaultComputerPassword -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordDefaultComputerPassword) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDefaultComputerPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'There were no accounts found that match default computer password criteria.'
                     }
@@ -285,8 +289,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                         'These accounts are not required to have a password. For some accounts it may be perfectly acceptable ' `
                             + ' but for some it may not. Those accounts should be reviewed and accepted or changed to proper security.'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPasswordNotRequired) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPasswordNotRequired -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordPasswordNotRequired) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPasswordNotRequired -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'There were no accounts found that does not require password.'
@@ -298,8 +302,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                         'Following account have do not expire password policy set on them. Those accounts should be reviewed whether ' `
                             + 'allowing them to never expire is good idea and accepted risk.'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPasswordNeverExpires) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPasswordNeverExpires -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordPasswordNeverExpires) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPasswordNeverExpires -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             "There are no accounts in $Domain that never expire."
@@ -310,8 +314,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         'Following accounts have their Kerberos AES keys missing'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordAESKeysMissing) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordAESKeysMissing -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordAESKeysMissing) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordAESKeysMissing -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'There are no accounts that hvae their Kerberos AES keys missing.'
@@ -322,8 +326,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         'Kerberos pre-authentication is not required for these accounts'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPreAuthNotRequired) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordPreAuthNotRequired -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordPreAuthNotRequired) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPreAuthNotRequired -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'There were no accounts found that do not require pre-authentication.'
@@ -334,8 +338,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         'Only DES encryption is allowed to be used with these accounts'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDESEncryptionOnly) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDESEncryptionOnly -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordDESEncryptionOnly) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDESEncryptionOnly -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'There are no account that require only DES encryption.'
@@ -346,8 +350,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         'These accounts are allowed to be delegated to a service:'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDelegatableAdmins) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDelegatableAdmins -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordDelegatableAdmins) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDelegatableAdmins -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'No accounts were found that are allowed to be delegated to a service.'
@@ -358,8 +362,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         'Following groups of users have same passwords:'
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDuplicatePasswordGroups) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordDuplicatePasswordGroups -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordDuplicatePasswordGroups) {
+                        DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainPasswordDuplicatePasswordGroups -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             "There are no 2 passwords that are the same in $Domain."
@@ -371,8 +375,8 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                         "Passwords of these accounts have been found in given HASH dictionary (https://haveibeenpwned.com/). It's highly recommended to " `
                             + "notify those users and ask them to change their passwords asap!"
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordHashesWeakPassword) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordHashesWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordHashesWeakPassword) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordHashesWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
                             'There were no passwords found that match in given dictionary.'
@@ -383,14 +387,14 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     DocText {
                         "Following table and chart shows password statistics"
                     }
-                    if ($ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats) {
-                        DocTable -DataTable  $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Password Quality - Statistics'
+                    if ($ADForest.FoundDomains.$Domain.DomainPasswordStats) {
+                        DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordStats -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Password Quality - Statistics'
                     } else {
                         DocText {
                             'There were no passwords found that match in given dictionary.'
                         }
                     }
-                    DocChart -Title 'Password Statistics' -DataTable $ADForest.FoundDomains.'ad.evotec.xyz'.DomainPasswordStats # Hashtables don't require Key/Value pair
+                    DocChart -Title 'Password Statistics' -DataTable $ADForest.FoundDomains.$Domain.DomainPasswordStats # Hashtables don't require Key/Value pair
                 }
             }
         }

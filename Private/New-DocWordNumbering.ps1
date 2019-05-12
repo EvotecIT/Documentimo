@@ -2,13 +2,13 @@
     [CmdletBinding()]
     param(
         [Xceed.Words.NET.Container] $WordDocument,
-        [PSCustomObject] $WordObject
+        [PSCustomObject] $Parameters
     )
 
-    $TOC = Add-WordTocItem -WordDocument $WordDocument -Text $WordObject.Text -ListLevel $WordObject.Level -ListItemType $WordObject.Type -HeadingType $WordObject.Heading
+    $TOC = Add-WordTocItem -WordDocument $WordDocument -Text $Parameters.Text -ListLevel $Parameters.Level -ListItemType $Parameters.Type -HeadingType $Parameters.Heading
 
-    if ($WordObject.Content) {
-        #$Content = Invoke-Command -ScriptBlock $WordObject.Content
-        New-WordProcessing -Content $WordObject.Content -WordDocument $WordDocument
+    if ($Parameters.Content) {
+        #$Content = Invoke-Command -ScriptBlock $Parameters.Content
+        New-WordProcessing -Content $Parameters.Content -WordDocument $WordDocument
     }
 }
