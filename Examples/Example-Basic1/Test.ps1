@@ -9,7 +9,7 @@ $TableForCharts = @(
 )
 
 Documentimo -FilePath $PSScriptRoot\Test.docx {
-    DocTableOfContents -Title 'Table of content'
+    DocTOC -Title 'Table of content'
 
     DocPageBreak -Verbose
 
@@ -30,8 +30,14 @@ Documentimo -FilePath $PSScriptRoot\Test.docx {
 
     DocTable -DataTable $Table -Design ColorfulGrid
     DocList {
-        DocListItem -Text 'Test' -Level 0 -Type Bulleted
-        DocListItem -Text 'Test1' -Level 2 -Type Bulleted
+        DocListItem -Text 'Test' -Level 0
+        DocListItem -Text 'Test1' -Level 2
     }
+
+    DocList -Type Numbered {
+        DocListItem -Text 'Test' -Level 0
+        DocListItem -Text 'Test1' -Level 2
+    }
+
     DocTable -DataTable $Table1 -Design ColorfulGrid
 } -Open
