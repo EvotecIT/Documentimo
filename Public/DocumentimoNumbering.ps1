@@ -11,7 +11,7 @@
     [PSCustomObject] @{
         ObjectType = 'TocItem'
         Text       = $Text
-        Content    = $Content
+        Content    = & $Content
         Level      = $Level
         Type       = $Type
         Heading    = $Heading
