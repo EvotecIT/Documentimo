@@ -1,8 +1,8 @@
 ﻿<center>
 
-[![PowerShellGallery Version](https://img.shields.io/powershellgallery/v/Documentimo.svg)](https://www.powershellgallery.com/packages/PSWinReportingV2)
+[![PowerShellGallery Version](https://img.shields.io/powershellgallery/v/Documentimo.svg)](https://www.powershellgallery.com/packages/Documentimo)
 
-[![PowerShellGallery Platform](https://img.shields.io/powershellgallery/p/Documentimo.svg)](https://www.powershellgallery.com/packages/PSWinReportingV2)
+[![PowerShellGallery Platform](https://img.shields.io/powershellgallery/p/Documentimo.svg)](https://www.powershellgallery.com/packages/Documentimo)
 [![PowerShellGallery Preview Version](https://img.shields.io/powershellgallery/vpre/Documentimo.svg?label=powershell%20gallery%20preview&colorB=yellow)](https://www.powershellgallery.com/packages/Documentimo)
 
 ![Top Language](https://img.shields.io/github/languages/top/evotecit/Documentimo.svg)
