@@ -1,5 +1,5 @@
 ﻿Import-Module PSWinDocumentation.AD -Force
-Import-Module Documentimo -Force
+Import-Module Documentimo.psd1 -Force
 
 if ($null -eq $ADForest) {
     $ADForest = Get-WinADForestInformation -Verbose -PasswordQuality -DontRemoveEmpty
@@ -100,7 +100,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
             DocNumbering -Text 'General Information - Fine-grained Password Policies' -Level 1 -Type Numbered -Heading Heading1 {
                 if ($ADForest.FoundDomains.$Domain.DomainFineGrainedPolicies) {
                     DocText -Text 'Following table contains Fine-grained password policies'
-                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle  "Fine-grained Password Policy for <Domain>"
+                    DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainFineGrainedPolicies -Design ColorfulGridAccent5 -AutoFit Window # -OverwriteTitle  "Fine-grained Password Policy for <Domain>"
                 } else {
                     DocText {
                         "Following section should cover fine-grained password policies. " `
