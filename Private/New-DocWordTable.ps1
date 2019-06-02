@@ -1,12 +1,12 @@
 ﻿function New-DocWordTable {
     [CmdletBinding()]
     param(
-        [Xceed.Words.NET.Container] $WordDocument,
+        [Container] $WordDocument,
         [PSCustomObject] $Parameters
     )
 
     if ($Parameters.OverWriteTitle) {
-        [Xceed.Words.NET.Alignment] $TitleAlignment = $Parameters.OverwriteTitleAlignment
+        [Alignment] $TitleAlignment = $Parameters.OverwriteTitleAlignment
         [System.Drawing.Color] $TitleColor = $Parameters.OverwriteTitleColor
 
         $Table = Add-WordTable -WordDocument $WordDocument -Supress $false -DataTable $Parameters.DataTable -Design $Parameters.Design -AutoFit $Parameters.AutoFit #-DoNotAddTitle

@@ -4,7 +4,7 @@
     param(
         [string] $Title,
         [int] $RightTabPos,
-        [Xceed.Words.Net.TableOfContentsSwitches] $Switches
+        [TableOfContentsSwitches] $Switches
     )
     [PSCustomObject] @{
         ObjectType  = 'TOC'

@@ -1,3 +1,6 @@
+using namespace Xceed.Words.NET
+using namespace Xceed.Document.NET
+
 function Documentimo {
     [CmdletBinding()]
     [alias('Doc', 'New-Documentimo')]
@@ -13,5 +16,3 @@ function Documentimo {
     }
     Save-WordDocument -WordDocument $WordDocument -Supress $true -Language 'en-US' -Verbose -OpenDocument:$Open
 }
-
-

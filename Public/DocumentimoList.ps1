@@ -3,7 +3,7 @@
     [alias('DocumentimoList', 'New-DocumentimoList')]
     param(
         [ScriptBlock] $ListItems,
-        [alias('ListType')][Xceed.Words.NET.ListItemType] $Type = [Xceed.Words.NET.ListItemType]::Bulleted
+        [alias('ListType')][ListItemType] $Type = [ListItemType]::Bulleted
     )
 
     [PSCustomObject] @{

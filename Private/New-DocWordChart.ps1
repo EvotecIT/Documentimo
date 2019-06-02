@@ -1,14 +1,14 @@
 function New-DocWordChart {
     [CmdletBinding()]
     param(
-        [Xceed.Words.NET.Container] $WordDocument,
+        [Container] $WordDocument,
         [PSCustomObject] $Parameters
     )
 
     [Array] $DataTable = $Parameters.DataTable
     [string] $Key = $Parameters.Key
     [string] $Value = $Parameters.Value
-    [Xceed.Words.NET.ChartLegendPosition] $LegendPosition = $Parameters.LegendPosition
+    [ChartLegendPosition] $LegendPosition = $Parameters.LegendPosition
     [bool] $LegendOverlay = $Parameters.LegendOverlay
     [string] $Title = $Parameters.Title
 

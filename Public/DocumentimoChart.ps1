@@ -6,7 +6,7 @@
         [string] $Title,
         [string] $Key,
         [string] $Value,
-        [Xceed.Words.NET.ChartLegendPosition] $LegendPosition = [Xceed.Words.NET.ChartLegendPosition]::Bottom,
+        [ChartLegendPosition] $LegendPosition = [ChartLegendPosition]::Bottom,
         [bool] $LegendOverlay
     )
 
