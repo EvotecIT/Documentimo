@@ -149,7 +149,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'General Information - Users Count' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of users in its categories"
                     DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Users Count'
-                    DocChart -Title 'Servers Count' -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount
+                    DocChart -Title 'Users Count' -DataTable  $ADForest.FoundDomains.$Domain.DomainUsersCount
                 }
                 DocNumbering -Text 'General Information - Domain Administrators' -Level 2 -Type Numbered -Heading Heading2 {
 
@@ -177,7 +177,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'General Information - Computers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of computers and their versions"
                     DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainComputersCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Computers Count'
-                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersCount -Key 'System Name' -Value  'System Count'
+                    DocChart -Title 'Computers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersCount -Key 'System Name' -Value  'System Count'
                 }
                 DocNumbering -Text 'General Information - Servers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of servers and their versions"
@@ -187,7 +187,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 DocNumbering -Text 'General Information - Unknown Computers' -Level 2 -Type Numbered -Heading Heading2 {
                     DocText -Text "Following table and chart shows number of unknown object computers in domain."
                     DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainComputersUnknownCount -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Unknown Computers Count'
-                    DocChart -Title 'Servers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersUnknownCount -Key 'System Name' -Value  'System Count'
+                    DocChart -Title 'Unknown Computers Count' -DataTable $ADForest.FoundDomains.$Domain.DomainComputersUnknownCount -Key 'System Name' -Value  'System Count'
                 }
             }
 
