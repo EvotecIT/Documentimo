@@ -17,7 +17,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
     }
     DocNumbering -Text 'General Information - Forest Summary' -Level 0 -Type Numbered -Heading Heading1 {
         DocText {
-            "Active Directory at $CompanyName has a forest name $($ADForest.Forest). Following table contains forest summary with important information:"
+            "Active Directory at $CompanyName has a forest name $($ADForest.ForestInformation.Name). Following table contains forest summary with important information:"
         }
         DocTable -DataTable $ADForest.ForestInformation -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Forest Summary'
         DocText -LineBreak
