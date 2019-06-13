@@ -36,7 +36,7 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
 
         if ($ADForest.ForestSPNSuffixes) {
             DocText -Text 'Following SPN suffixes were created in this forest:'
-            DocTable -DataTable $ADForest.ForestSPNSuffixes -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'UPN Suffixes'
+            DocTable -DataTable $ADForest.ForestSPNSuffixes -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'SPN Suffixes'
         } else {
             DocText -Text 'No SPN suffixes were created in this forest.'
         }
