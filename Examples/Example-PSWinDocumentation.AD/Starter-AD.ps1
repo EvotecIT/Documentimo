@@ -198,21 +198,19 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                 }
 
                 DocNumbering -Text 'Password Quality - Passwords with Reversible Encryption' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText -Text 'Passwords of these accounts are stored using reversible encryption.'
-
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordClearTextPassword) {
+                        DocText -Text 'Passwords of these accounts are stored using reversible encryption.'
                         DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainPasswordClearTextPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'There are no accounts that have passwords stored using reversible encryption.'
                     }
                 }
                 DocNumbering -Text 'Password Quality - Passwords with LM Hash' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'LM-hashes is the oldest password storage used by Windows, dating back to OS/2 system.' `
-                            + ' Due to the limited charset allowed, they are fairly easy to crack. Following accounts are affected:'
-                    }
-
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordLMHash) {
+                        DocText {
+                            'LM-hashes is the oldest password storage used by Windows, dating back to OS/2 system.'
+                            'Due to the limited charset allowed, they are fairly easy to crack. Following accounts are affected:'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordLMHash -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -222,41 +220,50 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Empty Passwords' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText -Text  'Following accounts have no password set:'
-
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordEmptyPassword) {
+                        DocText -Text  'Following accounts have no password set:'
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordEmptyPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text "There are no accounts in $Domain that have no password set."
                     }
                 }
                 DocNumbering -Text 'Password Quality - Known passwords' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        "Passwords of these accounts have been found in given dictionary. It's highly recommended to " `
-                            + "notify those users and ask them to change their passwords asap!"
-                    }
-
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordWeakPassword) {
+                        DocText {
+                            "Passwords of these accounts have been found in given dictionary. It's highly recommended to " `
+                                + "notify those users and ask them to change their passwords asap! Following is list of passwords used for comparision:"
+                        }
+                        DocList {
+                            foreach ($_ in $ADForest.FoundDomains.$Domain.DomainPasswordWeakPasswordList) {
+                                DocListItem -Level 1 -Text $_
+                            }
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
-                        DocText -Text 'There were no passwords found that match given dictionary.'
+                        DocText -Text 'Domain was tested for the use of known passwords from the list below:'
+                        DocList {
+                            foreach ($_ in $ADForest.FoundDomains.$Domain.DomainPasswordWeakPasswordList) {
+                                DocListItem -Level 1 -Text $_
+                            }
+                        }
+                        DocText -Text 'There were no accounts found that match given dictionary.'
                     }
                 }
                 DocNumbering -Text 'Password Quality - Default Computer Password' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText -Text 'These computer objects have their password set to default:'
-
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordDefaultComputerPassword) {
+                        DocText -Text 'These computer objects have their password set to default:'
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDefaultComputerPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText -Text 'There were no accounts found that match default computer password criteria.'
                     }
                 }
                 DocNumbering -Text 'Password Quality - Password Not Required' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'These accounts are not required to have a password. For some accounts it may be perfectly acceptable ' `
-                            + ' but for some it may not. Those accounts should be reviewed and accepted or changed to proper security.'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordPasswordNotRequired) {
+                        DocText {
+                            'These accounts are not required to have a password. For some accounts it may be perfectly acceptable ' `
+                                + ' but for some it may not. Those accounts should be reviewed and accepted or changed to proper security.'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPasswordNotRequired -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -265,11 +272,12 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text  'Password Quality - Non expiring passwords' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'Following account have do not expire password policy set on them. Those accounts should be reviewed whether ' `
-                            + 'allowing them to never expire is good idea and accepted risk.'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordPasswordNeverExpires) {
+                        DocText {
+                            'Following account have do not expire password policy set on them. Those accounts should be reviewed whether ' `
+                                + 'allowing them to never expire is good idea and accepted risk.'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPasswordNeverExpires -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -278,10 +286,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - AES Keys Missing' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'Following accounts have their Kerberos AES keys missing'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordAESKeysMissing) {
+                        DocText {
+                            'Following accounts have their Kerberos AES keys missing'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordAESKeysMissing -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -290,10 +299,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Kerberos Pre-Auth Not Required' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'Kerberos pre-authentication is not required for these accounts'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordPreAuthNotRequired) {
+                        DocText {
+                            'Kerberos pre-authentication is not required for these accounts'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordPreAuthNotRequired -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -302,10 +312,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Only DES Encryption Allowed' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'Only DES encryption is allowed to be used with these accounts'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordDESEncryptionOnly) {
+                        DocText {
+                            'Only DES encryption is allowed to be used with these accounts'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDESEncryptionOnly -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -314,10 +325,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Delegatable to Service' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'These accounts are allowed to be delegated to a service:'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordDelegatableAdmins) {
+                        DocText {
+                            'These accounts are allowed to be delegated to a service:'
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordDelegatableAdmins -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -326,10 +338,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Groups of Users With Same Password' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        'Following groups of users have same passwords:'
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordDuplicatePasswordGroups) {
+                        DocText {
+                            'Following groups of users have same passwords:'
+                        }
                         DocTable -DataTable $ADForest.FoundDomains.$Domain.DomainPasswordDuplicatePasswordGroups -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -338,11 +351,12 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text 'Password Quality - Leaked Passwords' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        "Passwords of these accounts have been found in given HASH dictionary (https://haveibeenpwned.com/). It's highly recommended to " `
-                            + "notify those users and ask them to change their passwords asap!"
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordHashesWeakPassword) {
+                        DocText {
+                            "Passwords of these accounts have been found in given HASH dictionary (https://haveibeenpwned.com/). It's highly recommended to " `
+                                + "notify those users and ask them to change their passwords asap!"
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordHashesWeakPassword -Design ColorfulGridAccent5 -AutoFit Window
                     } else {
                         DocText {
@@ -351,10 +365,11 @@ Documentimo -FilePath "$PSScriptRoot\Starter-AD.docx" {
                     }
                 }
                 DocNumbering -Text  'Password Quality - Statistics' -Level 2 -Type Numbered -Heading Heading2 {
-                    DocText {
-                        "Following table and chart shows password statistics"
-                    }
+
                     if ($ADForest.FoundDomains.$Domain.DomainPasswordStats) {
+                        DocText {
+                            "Following table and chart shows password statistics"
+                        }
                         DocTable -DataTable  $ADForest.FoundDomains.$Domain.DomainPasswordStats -Design ColorfulGridAccent5 -AutoFit Window -OverwriteTitle 'Password Quality - Statistics'
                     } else {
                         DocText {

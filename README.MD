@@ -18,6 +18,9 @@
 Simplified version of [PSWriteWord](https://github.com/EvotecIT/PSWriteWord) PowerShell Module. Easy to use, easier to remember syntax. It's still in very alpha stage.
 
 ### Changelog
+- 0.5.0 - 23.06.2019
+  - Support for PSWriteWord 1.0
+  - Support for PSSharedGoods 0.0.79
 - 0.4.0 - 15.05.2019
   - Fix for problems with content within content
 - 0.3.0 - 12.05.2019

@@ -7,12 +7,13 @@ function Documentimo {
     param(
         [Parameter(Position = 0)][ValidateNotNull()][ScriptBlock] $Content = $(Throw "Documentimo requires opening and closing brace."),
         [string] $FilePath,
-        [switch] $Open
+        [switch] $Open,
+        [string] $Language = 'en-US'
     )
     $WordDocument = New-WordDocument -FilePath $FilePath
     if ($null -ne $Content) {
         $Array = Invoke-Command -ScriptBlock $Content
         New-WordProcessing -Content $Array -WordDocument $WordDocument
     }
-    Save-WordDocument -WordDocument $WordDocument -Supress $true -Language 'en-US' -Verbose -OpenDocument:$Open
+    Save-WordDocument -WordDocument $WordDocument -Supress $true -Language $Language -Verbose -OpenDocument:$Open
 }
