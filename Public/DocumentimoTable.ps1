@@ -4,7 +4,7 @@ function DocTable {
     param(
         [Array] $DataTable,
         [AutoFit] $AutoFit = [AutoFit]::Window,
-        [TableDesign] $Design,
+        [TableDesign] $Design = [TableDesign]::LightGrid,
         [Direction] $Direction = [Direction]::LeftToRight,
         [int] $MaximumColumns = 5,
         [string] $OverwriteTitle,

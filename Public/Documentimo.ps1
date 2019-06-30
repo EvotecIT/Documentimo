@@ -7,7 +7,7 @@ function Documentimo {
     param(
         [Parameter(Position = 0)][ValidateNotNull()][ScriptBlock] $Content = $(Throw "Documentimo requires opening and closing brace."),
         [string] $FilePath,
-        [switch] $Open,
+        [alias('Show')][switch] $Open,
         [string] $Language = 'en-US'
     )
     $WordDocument = New-WordDocument -FilePath $FilePath
