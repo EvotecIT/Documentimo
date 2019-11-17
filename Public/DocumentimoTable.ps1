@@ -3,12 +3,12 @@ function DocTable {
     [alias('DocumentimoTable', 'New-DocumentimoTable')]
     param(
         [Array] $DataTable,
-        [AutoFit] $AutoFit = [AutoFit]::Window,
-        [TableDesign] $Design = [TableDesign]::LightGrid,
-        [Direction] $Direction = [Direction]::LeftToRight,
+        [Xceed.Document.NET.AutoFit] $AutoFit = [Xceed.Document.NET.AutoFit]::Window,
+        [Xceed.Document.NET.TableDesign] $Design = [Xceed.Document.NET.TableDesign]::LightGrid,
+        [Xceed.Document.NET.Direction] $Direction = [Xceed.Document.NET.Direction]::LeftToRight,
         [int] $MaximumColumns = 5,
         [string] $OverwriteTitle,
-        [Alignment] $OverwriteTitleAlignment = [Alignment]::center,
+        [Xceed.Document.NET.Alignment] $OverwriteTitleAlignment = [Xceed.Document.NET.Alignment]::center,
         [System.Drawing.Color] $OverwriteTitleColor = [System.Drawing.Color]::Black
     )
     [PSCustomObject] @{

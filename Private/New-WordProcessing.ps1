@@ -2,7 +2,7 @@
     [CmdletBinding()]
     param(
         [Array] $Content,
-        [Container] $WordDocument
+        [Xceed.Document.NET.Container] $WordDocument
     )
     if ($Content.Count -gt 0) {
         foreach ($Parameters in $Content) {

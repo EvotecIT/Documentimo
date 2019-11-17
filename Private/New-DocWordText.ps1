@@ -1,7 +1,7 @@
 ﻿function New-DocWordText {
     [CmdletBinding()]
     param(
-        [Container] $WordDocument,
+        [Xceed.Document.NET.Container] $WordDocument,
         [PSCustomObject] $Parameters
     )
 

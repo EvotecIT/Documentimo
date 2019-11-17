@@ -1,7 +1,7 @@
 ﻿function New-DocWordTOC {
     [CmdletBinding()]
     param(
-        [Container] $WordDocument,
+        [Xceed.Document.NET.Container] $WordDocument,
         [PSCustomObject] $Parameters
     )
 

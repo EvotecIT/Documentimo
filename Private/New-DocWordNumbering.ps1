@@ -1,7 +1,7 @@
 ﻿function New-DocWordNumbering {
     [CmdletBinding()]
     param(
-        [Container] $WordDocument,
+        [Xceed.Document.NET.Container] $WordDocument,
         [PSCustomObject] $Parameters
     )
 
