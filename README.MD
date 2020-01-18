@@ -1,38 +1,54 @@
-﻿<center>
+﻿<p align="center">
+  <a href="https://www.powershellgallery.com/packages/Documentimo"><img src="https://img.shields.io/powershellgallery/v/Documentimo.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/Documentimo"><img src="https://img.shields.io/powershellgallery/vpre/Documentimo.svg?label=powershell%20gallery%20preview&colorB=yellow"></a>
+  <a href="https://github.com/EvotecIT/Documentimo"><img src="https://img.shields.io/github/license/EvotecIT/Documentimo.svg"></a>
+</p>
 
-[![PowerShellGallery Version](https://img.shields.io/powershellgallery/v/Documentimo.svg)](https://www.powershellgallery.com/packages/Documentimo)
+<p align="center">
+  <a href="https://www.powershellgallery.com/packages/PSWriteHTML"><img src="https://img.shields.io/powershellgallery/p/Documentimo.svg"></a>
+  <a href="https://github.com/EvotecIT/Documentimo"><img src="https://img.shields.io/github/languages/top/evotecit/Documentimo.svg"></a>
+  <a href="https://github.com/EvotecIT/Documentimo"><img src="https://img.shields.io/github/languages/code-size/evotecit/Documentimo.svg"></a>
+  <a href="https://www.powershellgallery.com/packages/Documentimo"><img src="https://img.shields.io/powershellgallery/dt/Documentimo.svg"></a>
+</p>
 
-[![PowerShellGallery Platform](https://img.shields.io/powershellgallery/p/Documentimo.svg)](https://www.powershellgallery.com/packages/Documentimo)
-[![PowerShellGallery Preview Version](https://img.shields.io/powershellgallery/vpre/Documentimo.svg?label=powershell%20gallery%20preview&colorB=yellow)](https://www.powershellgallery.com/packages/Documentimo)
-
-![Top Language](https://img.shields.io/github/languages/top/evotecit/Documentimo.svg)
-![Code](https://img.shields.io/github/languages/code-size/evotecit/Documentimo.svg)
-[![PowerShellGallery Downloads](https://img.shields.io/powershellgallery/dt/Documentimo.svg)](https://www.powershellgallery.com/packages/Documentimo)
-
-</center>
+<p align="center">
+  <a href="https://twitter.com/PrzemyslawKlys"><img src="https://img.shields.io/twitter/follow/PrzemyslawKlys.svg?label=Twitter%20%40PrzemyslawKlys&style=social"></a>
+  <a href="https://evotec.xyz/hub"><img src="https://img.shields.io/badge/Blog-evotec.xyz-2A6496.svg"></a>
+  <a href="https://www.linkedin.com/in/pklys"><img src="https://img.shields.io/badge/LinkedIn-pklys-0077B5.svg?logo=LinkedIn"></a>
+</p>
 
 # Documentimo - PowerShell Module
+
 `Documentimo` is a Powershell module that has a single goal creating easy to use Word based documentation
 
-### Overview:
+## Overview
+
 Simplified version of [PSWriteWord](https://github.com/EvotecIT/PSWriteWord) PowerShell Module. Easy to use, easier to remember syntax. It's still in very alpha stage.
+Since version 0.0.7 it is now integrated back to **PSWriteWord** and this project is archived. If you want to use Documentimo features simply uninstall Documentimo and install PSWriteWord.
+
+```PowerShell
+Uninstall-Module Documentimo -AllVersions
+Install-Module PSWriteWord -Force
+```
+
+This project is archived. For development go to https://github.com/EvotecIT/PSWriteWord
 
 ### Changelog
 
-- 0.5.1 - Unreleased
+- 0.0.7 - 2020.01.18
   - Added TableDesign default
-- 0.5.0 - 23.06.2019
+  - Migrated back to PSWriteWord. This module is now meta module with only PSD1 file.
+- 0.0.6 - 2019.06.23
   - Support for PSWriteWord 1.0
   - Support for PSSharedGoods 0.0.79
-- 0.4.0 - 15.05.2019
+- 0.0.5 - 2019.05.15
   - Fix for problems with content within content
-- 0.3.0 - 12.05.2019
+- 0.0.4 - 2019.05.12
   - First public release
-
 
 ### Install
 
-```
+```powershell
 Install-Module Documentimo -Force
 ```
 
@@ -40,7 +56,7 @@ Install-Module Documentimo -Force
 
 ![image](https://evotec.xyz/wp-content/uploads/2019/05/img_5cd7ffc9bab8f.png)
 
-```
+```powershell
 $Table = Get-Process | Select-Object -First 5
 
 $TableForCharts = @(
