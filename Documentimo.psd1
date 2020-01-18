@@ -12,7 +12,7 @@
     RootModule        = 'Documentimo.psm1'
 
     # Version number of this module.
-    ModuleVersion     = '0.0.7'
+    ModuleVersion     = '0.0.8'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -51,8 +51,7 @@
     # ProcessorArchitecture = ''
 
     # Modules that must be imported into the global environment prior to importing this module
-    RequiredModules   = @(@{ModuleName = 'PSWriteWord'; GUID = '6314c78a-d011-4489-b462-91b05ec6a5c4'; ModuleVersion = '1.1.2'; }, 
-        @{ModuleName = 'PSSharedGoods'; GUID = 'ee272aa8-baaa-4edf-9f45-b6d6f7d844fe'; ModuleVersion = '0.0.106'; })
+    RequiredModules   = @(@{ModuleName = 'PSWriteWord'; GUID = '6314c78a-d011-4489-b462-91b05ec6a5c4'; ModuleVersion = '1.1.2'; })
 
     # Assemblies that must be loaded prior to importing this module
     # RequiredAssemblies = @()

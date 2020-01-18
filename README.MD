@@ -35,7 +35,7 @@ This project is archived. For development go to https://github.com/EvotecIT/PSWr
 
 ### Changelog
 
-- 0.0.7 - 2020.01.18
+- 0.0.8 - 2020.01.18
   - Added TableDesign default
   - Migrated back to PSWriteWord. This module is now meta module with only PSD1 file.
 - 0.0.6 - 2019.06.23
