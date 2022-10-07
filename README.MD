@@ -19,6 +19,8 @@
 
 # Documentimo - PowerShell Module
 
+**Documentimo** was merged with https://github.com/EvotecIT/PSWriteWord project. This means all functions/commands have moved there and can be used by installing PSWriteWord. This projected is now **ARCHIVED**!
+
 `Documentimo` is a Powershell module that has a single goal creating easy to use Word based documentation
 
 ## Overview
